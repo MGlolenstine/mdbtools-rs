@@ -8,7 +8,9 @@ description = "Simple mdbtools wrapper"
 repository = "https://github.com/MGlolenstine/mdbtools-rs"
 readme = "README.md"
 keywords = ["db", "sqlite", "wrapper"]
-
+exclude = [
+    "Biblio.mdb"
+]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
