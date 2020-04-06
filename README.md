@@ -17,3 +17,13 @@ You can use if, if you need to access an Access database from within Rust
 - [ ] Get data from a table directly
 - [ ] Export database to SQLite database
 - [ ] Query database with SQL
+
+
+# How to use
+Put the following inside your `Cargo.toml` under dependencies
+```
+mdbtools-rs = {git="https://github.com/MGlolenstine/mdbtools-rs"}
+```
+
+# Documentation
+Coming soon.
