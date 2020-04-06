@@ -3,6 +3,11 @@ name = "mdbtools_rs"
 version = "0.1.0"
 authors = ["MGlolenstine <mglolenstine@gmail.com>"]
 edition = "2018"
+licence = "MIT"
+description = "Simple mdbtools wrapper"
+repository = "https://github.com/MGlolenstine/mdbtools-rs"
+readme = "README.md"
+keywords = ["db", "sqlite", "wrapper"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
