@@ -1,5 +1,5 @@
-# What is mdbtools-rs
-`mdbtools-rs` is just a simple wrapper around the mdbtools cli interface.
+# What is mdbtools_rs
+`mdbtools_rs` is just a simple wrapper around the mdbtools cli interface.
 
 
 # What are MDBTOOLS
@@ -7,7 +7,7 @@
 
 
 # Why should I use it
-You can use if, if you need to access an Access database from within Rust
+You can use it, if you need to access an Access database from within Rust
 
 
 # Features
@@ -20,6 +20,16 @@ You can use if, if you need to access an Access database from within Rust
 
 
 # How to use
+Put the following inside your `Cargo.toml` under dependencies
+```toml
+[dependencies]
+mdbtools_rs = "0.1.3"
+```
+<!-- Visit [crates.io](https://crates.io/crates/mdbtools_rs) and put the  -->
+
+
+# Bleeding edge
+
 Put the following inside your `Cargo.toml` under dependencies
 ```
 mdbtools-rs = {git="https://github.com/MGlolenstine/mdbtools-rs"}
