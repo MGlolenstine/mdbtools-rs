@@ -1,45 +1,40 @@
 #![allow(dead_code)]
 use std::collections::HashMap;
 use std::process::Command;
-// fn main(){
-//     let output = if cfg!(target_os = "windows") {
-//     Command::new("cmd")
-//             .args(&["/C", "echo hello"])
-//             .output()
-//             .expect("failed to execute process")
-//     } else {
-//     Command::new("sh")
-//             .arg("-c")
-//             .arg("echo hello")
-//             .output()
-//             .expect("failed to execute process")
-//     };
-// }
+
+/// Database struct that holds the original filepath, tables and it's sql_schema
 #[derive(Debug)]
 struct MDatabase {
+    /// Filepath to the original file
     pub file: String,
+    /// Hashmap of tables contained in the database
     pub tables: HashMap<String, MTable>,
+    /// SQL schema of the database
     pub sql_schema: Option<String>,
 }
 
+/// Table struct that holds the data in SQL and CSV formats
 #[derive(Clone, Default, Debug)]
 struct MTable {
+    /// SQL data for the table
     pub sql: Option<String>,
+    /// CSV data for the table
     pub csv: Option<String>,
 }
 
 impl MTable{
-    pub fn set_sql(&mut self, data: String){
+    fn set_sql(&mut self, data: String){
         self.sql = Some(data);
     }
 
-    pub fn set_csv(&mut self, data: String){
+    fn set_csv(&mut self, data: String){
         self.csv = Some(data);
     }
 }
 
 impl MDatabase {
-    fn open_database(path: &str) -> MDatabase {
+    /// Open a database file
+    pub fn open_database(path: &str) -> MDatabase {
         MDatabase {
             file: path.to_string(),
             tables: MDatabase::fetch_tables(path),
@@ -47,21 +42,25 @@ impl MDatabase {
         }
     }
 
+    /// Fetch the SQL schema
     pub fn fetch_sql_schema(&mut self){
         self.sql_schema = Some(std::str::from_utf8(&Command::new("mdb-schema").arg(self.file.clone()).arg("sqlite").output().expect("Something went wrong when querying the table!").stdout).expect("Something went wrong when querying the table!").to_string());
     }
 
-    fn fetch_csv(&mut self, table: &str) {
+    /// Fetch the CSV data for a table
+    pub fn fetch_csv(&mut self, table: &str) {
         self.tables.get_mut(table).unwrap().set_csv(std::str::from_utf8(&Command::new("mdb-export").arg(self.file.clone()).arg(table).output().expect("Something went wrong when querying the table!").stdout).expect("Something went wrong when querying the table!").to_string());
     }
 
-    fn fetch_sql(&mut self, table: &str) {
+    /// Fetch the SQL data for a table
+    pub fn fetch_sql(&mut self, table: &str) {
         println!("{} {} {} {} {}", "mdb-export", "-H", "-I sqlite", self.file.clone(), table);
         let cmd = Command::new("mdb-export").args(&["-H", "-I", "sqlite", &self.file.clone(), table]).output().expect("Something went wrong when querying the table!");
         println!("Err: {:#?}", std::str::from_utf8(&cmd.stderr));
         self.tables.get_mut(table).unwrap().set_sql(std::str::from_utf8(&cmd.stdout).expect("Something went wrong when querying the table!").to_string());
     }
 
+    /// Fetch tables in the database
     fn fetch_tables(path: &str) -> HashMap<String, MTable> {
         let out = Command::new("mdb-tables")
             .arg(path)
@@ -79,6 +78,8 @@ impl MDatabase {
         hashmap
     }
 
+    /// Get SQL schema
+    /// It also stores inside of the MDatabase
     pub fn get_sql_schema(&mut self) -> String{
         if let Some(v) = self.sql_schema.clone() {
             return v;
@@ -88,6 +89,8 @@ impl MDatabase {
         }
     }
 
+    /// Get CSV
+    /// It also stores inside of the MTable
     fn get_csv(&mut self, table: &str) -> String {
         if let Some(v) = self.tables.get(table).unwrap().csv.clone() {
             return v;
@@ -97,6 +100,8 @@ impl MDatabase {
         }
     }
 
+    /// Get SQL
+    /// It also stores inside of the MTable
     fn get_sql(&mut self, table: &str) -> String {
         if let Some(v) = self.tables.get(table).unwrap().sql.clone() {
             return v;
@@ -106,6 +111,7 @@ impl MDatabase {
         }
     }
 
+    /// Get tables
     fn get_tables(&self) -> HashMap<String, MTable> {
         return self.tables.clone();
     }
