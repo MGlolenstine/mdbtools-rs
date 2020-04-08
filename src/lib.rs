@@ -4,7 +4,7 @@ use std::process::Command;
 
 /// Database struct that holds the original filepath, tables and it's sql_schema
 #[derive(Debug)]
-struct MDatabase {
+pub struct MDatabase {
     /// Filepath to the original file
     pub file: String,
     /// Hashmap of tables contained in the database
@@ -15,7 +15,7 @@ struct MDatabase {
 
 /// Table struct that holds the data in SQL and CSV formats
 #[derive(Clone, Default, Debug)]
-struct MTable {
+pub struct MTable {
     /// SQL data for the table
     pub sql: Option<String>,
     /// CSV data for the table
